@@ -18,14 +18,25 @@ def createExpense():
         print("the amount should be positive. Please try again")
         return
     try:
-        userDate = datetime.strptime(input("please enter a date in the format of YYYY-MM-DD"))
+        userDate = input("please enter a date in the format of YYYY-MM-DD")
+        datetime.strptime(userDate, "%Y-%m-%d")
     except ValueError:
         print("Incorrect date format. Please use YYYY-MM-DD")
         return
     expenseCategory = input("please input a category that you would like to label your expense: ").strip()
-    if expenseCategory == None:
+    if not expenseCategory:
         print("Please input a category. It cannot be blank")
         return
+    addExpense = {
+        "amount": userExpense,
+        "date": userDate,
+        "category": expenseCategory
+    }
+    data["expenses"].append(addExpense)
+    print("Good job! You successfully added an expense!")
+    print(f"This is your expense: ${userExpense:.2f}")
+    print(f"This is your date: {userDate}")
+    print(f"This is your category: {expenseCategory}")
 def interactMenu():
     while True:
         print("========================")
