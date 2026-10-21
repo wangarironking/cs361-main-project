@@ -44,11 +44,24 @@ def lookUpExpense():
     if not data["expenses"]:
         print("You haven't recorded any expenses yet")
         return
-    recentExpenses = sorted(OGList, key=lambda item: item["data"], reverse=True)
+    OGLIST = data["expenses"]
+    recentExpenses = sorted(, key=lambda item: item["data"], reverse=True)
+    
+
+
+    filteringDevice = input("Type 1 to keep all expenses showing in the list. Type 2 to filter by category")
+    if filteringDevice == "1":
+        print("these are all the expenses that you have: ")
+    elif filteringDevice == "2":
+        categoryType = input("please enter a category that you would like to filter: ").strip()
+        expense["category"].lower() == filteringDevice.lower()
+    else:
+        print("I'm sorry but that is not a valid response. Please choose 1 or 2.")
+        return
     for expense in recentExpenses:
-        print(f"expense log: {expense["date"]}")
-        print(f"expense category: {expense["category"]}")
-        print(f"expense amount: {expense["amount"]}")
+            print(f"expense log: {expense['date']}")
+            print(f"expense category: {expense['category']}")
+            print(f"expense amount: {expense['amount']}")
 def interactMenu():
     while True:
         print("========================")
@@ -69,6 +82,7 @@ def interactMenu():
             print("You selected to set a monthly cap")
         elif userSelection == "3":
             print("You selected to look at expense history")
+            lookUpExpense()
         elif userSelection == "4":
             print("Thank you for using the program. Goodbye!")
             break
