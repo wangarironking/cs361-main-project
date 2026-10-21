@@ -17,6 +17,15 @@ def createExpense():
     if userExpense <=0:
         print("the amount should be positive. Please try again")
         return
+    try:
+        userDate = datetime.strptime(input("please enter a date in the format of YYYY-MM-DD"))
+    except ValueError:
+        print("Incorrect date format. Please use YYYY-MM-DD")
+        return
+    expenseCategory = input("please input a category that you would like to label your expense: ").strip()
+    if expenseCategory == None:
+        print("Please input a category. It cannot be blank")
+        return
 def interactMenu():
     while True:
         print("========================")
@@ -32,6 +41,7 @@ def interactMenu():
         userSelection = input("Please enter your option number")
         if userSelection == "1":
             print("You selected to add an expense")
+            createExpense()
         elif userSelection == "2":
             print("You selected to set a monthly cap")
         elif userSelection == "3":
@@ -42,6 +52,6 @@ def interactMenu():
         else:
             print("please select a number integer from 1-4")
 
-        if __name__ == "__main__":
-            interactMenu()
+if __name__ == "__main__":
+    interactMenu()
         
