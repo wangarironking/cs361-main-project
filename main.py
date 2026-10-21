@@ -37,6 +37,18 @@ def createExpense():
     print(f"This is your expense: ${userExpense:.2f}")
     print(f"This is your date: {userDate}")
     print(f"This is your category: {expenseCategory}")
+def lookUpExpense():
+    print("========================")
+    print("====EXPENSE HISTORY====")
+    print("========================")
+    if not data["expenses"]:
+        print("You haven't recorded any expenses yet")
+        return
+    recentExpenses = sorted(OGList, key=lambda item: item["data"], reverse=True)
+    for expense in recentExpenses:
+        print(f"expense log: {expense["date"]}")
+        print(f"expense category: {expense["category"]}")
+        print(f"expense amount: {expense["amount"]}")
 def interactMenu():
     while True:
         print("========================")
