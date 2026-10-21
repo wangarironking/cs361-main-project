@@ -5,6 +5,18 @@ fileHandler = "budgetTracker.json"
 
 data = {"budget":0, "expenses": []}
 
+def createExpense():
+    print("========================")
+    print("====ADD A NEW EXPENSE====")
+    print("========================")
+    try:
+        userExpense = float(input("please enter a positive number for your expense!: "))
+    except ValueError:
+        print("You entered something that is not a positive number please try again")
+        return
+    if userExpense <=0:
+        print("the amount should be positive. Please try again")
+        return
 def interactMenu():
     while True:
         print("========================")
