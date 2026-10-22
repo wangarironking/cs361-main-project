@@ -5,6 +5,49 @@ fileHandler = "budgetTracker.json"
 
 data = {"budget":0, "expenses": []}
 
+def monthCap():
+    print("========================")
+    print("====MONTHLY BUDGET AMOUNT====")
+    print("========================")
+    print("")
+    print("")
+    print(f"The monthly cap is: ${data["budget"]:.2f}")
+    try:
+        newCap = int(input("Please input a new monthly cap for your plan: "))
+    except ValueError:
+        print("I'm sorry but that is not a valid number please enter a valid whole number")
+        return
+    if newCap <=0:
+        print("The monthly cap that you enter has to be positive")
+        return
+
+    print("confirm whether you would like to save and finalize this monthly cap")
+    print("press 1 to save it ")
+    print("press 2 to cancel it")
+    userSelection = input("enter either 1 or 2: ").strip()
+    if userSelection == "1":
+        data["budget"] = newCap
+
+    elif userSelection == "2":
+        print("you chose to cancel the budget plan")
+        return
+    else:
+        print("you did not choose a valid selection")
+        return
+
+    statusMonth = datetime.now().strftime("%Y-%m")
+    totalValue = 0
+    for value in data["expenses"]:
+        if value["date"].startswith(statusMonth):
+            totalValue += value["amount"]
+    leftOverMoney = data["budget"] - totalValue
+
+    print(f"This is your monthly budget: ${data['budget']:.2f}")
+    print(f"This is your expenses this month: {totalValue:.2f}")
+    print(f"This is your remaining budget: {leftOverMoney:.2f}")
+
+
+
 def createExpense():
     print("========================")
     print("====ADD A NEW EXPENSE====")
@@ -45,7 +88,7 @@ def lookUpExpense():
         print("You haven't recorded any expenses yet")
         return
     OGLIST = data["expenses"]
-    recentExpenses = sorted(, key=lambda item: item["data"], reverse=True)
+    recentExpenses = sorted(OGLIST, key=lambda item: item["data"], reverse=True)
     
 
 
@@ -54,7 +97,7 @@ def lookUpExpense():
         print("these are all the expenses that you have: ")
     elif filteringDevice == "2":
         categoryType = input("please enter a category that you would like to filter: ").strip()
-        expense["category"].lower() == filteringDevice.lower()
+        mostRecent = [expense for expense in mostRecent if expense["category"].lower() == categoryType.lower()]
     else:
         print("I'm sorry but that is not a valid response. Please choose 1 or 2.")
         return
