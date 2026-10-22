@@ -88,7 +88,7 @@ def lookUpExpense():
         print("You haven't recorded any expenses yet")
         return
     OGLIST = data["expenses"]
-    recentExpenses = sorted(OGLIST, key=lambda item: item["data"], reverse=True)
+    recentExpenses = sorted(OGLIST, key=lambda item: item["date"], reverse=True)
     
 
 
@@ -97,7 +97,7 @@ def lookUpExpense():
         print("these are all the expenses that you have: ")
     elif filteringDevice == "2":
         categoryType = input("please enter a category that you would like to filter: ").strip()
-        mostRecent = [expense for expense in mostRecent if expense["category"].lower() == categoryType.lower()]
+        recentExpenses = [expense for expense in recentExpenses if expense["category"].lower() == categoryType.lower()]
     else:
         print("I'm sorry but that is not a valid response. Please choose 1 or 2.")
         return
@@ -123,6 +123,7 @@ def interactMenu():
             createExpense()
         elif userSelection == "2":
             print("You selected to set a monthly cap")
+            monthCap()
         elif userSelection == "3":
             print("You selected to look at expense history")
             lookUpExpense()
