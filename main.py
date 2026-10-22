@@ -1,9 +1,24 @@
 import json
 from datetime import datetime
+import time
 
-fileHandler = "budgetTracker.json"
 
+fileOpener = "budgetInfo.json"
 data = {"budget":0, "expenses": []}
+
+def startupCommunication():
+    
+    with open(fileOpener,"w") as file:
+        json.dump(data, file, indent =2)
+def summonInfo():
+    global data
+    try:
+        with open(fileOpener, "r") as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        print("Did not find any budget. starting a new budget")
+    except json.JSONDecodeError:
+        print("the budget file of interest is empty or invalid. Starting a new budget")
 
 def monthCap():
     print("========================")
@@ -27,6 +42,7 @@ def monthCap():
     userSelection = input("enter either 1 or 2: ").strip()
     if userSelection == "1":
         data["budget"] = newCap
+        startupCommunication()
 
     elif userSelection == "2":
         print("you chose to cancel the budget plan")
@@ -75,11 +91,39 @@ def createExpense():
         "date": userDate,
         "category": expenseCategory
     }
-    data["expenses"].append(addExpense)
+    print("Would you like to have this expense saved?")
+    print("press 1 to confirm and 2 to cancel")
+    userSelection = input("Please enter 1 or 2: ").strip()
+
+    if userSelection =="1":
+        data["expenses"].append(addExpense)
+        startupCommunication()
+    elif userSelection == "2":
+        print("you canceled the expense and nothing is saved")
+        return
+    else:
+        print("that input was invalid. Expense was not saved")
+        return
+
+
+  
     print("Good job! You successfully added an expense!")
     print(f"This is your expense: ${userExpense:.2f}")
     print(f"This is your date: {userDate}")
     print(f"This is your category: {expenseCategory}")
+
+    print("Do you want to look at your expense history?")
+    print("Press 1 for yes and 2 to return to the main menu page")
+    additionalChoice = input("Please enter 1 or 2: ").strip()
+    if additionalChoice == "1":
+        lookUpExpense()
+    elif additionalChoice == "2":
+        return
+    else:
+        print("that is not a valid selection. Returning to main menu")
+        return
+
+
 def lookUpExpense():
     print("========================")
     print("====EXPENSE HISTORY====")
@@ -87,6 +131,7 @@ def lookUpExpense():
     if not data["expenses"]:
         print("You haven't recorded any expenses yet")
         return
+   
     OGLIST = data["expenses"]
     recentExpenses = sorted(OGLIST, key=lambda item: item["date"], reverse=True)
     
@@ -98,18 +143,32 @@ def lookUpExpense():
     elif filteringDevice == "2":
         categoryType = input("please enter a category that you would like to filter: ").strip()
         recentExpenses = [expense for expense in recentExpenses if expense["category"].lower() == categoryType.lower()]
+        if not recentExpenses:
+            print("There are no expenses found for that specific category")
+            return
     else:
         print("I'm sorry but that is not a valid response. Please choose 1 or 2.")
         return
-    for expense in recentExpenses:
+
+    timerCountBegin = time.perf_counter()
+    for expense in recentExpenses[:20]:
             print(f"expense log: {expense['date']}")
             print(f"expense category: {expense['category']}")
             print(f"expense amount: {expense['amount']}")
+
+    timerCountEnd = time.perf_counter()
+    timeDilation = timerCountEnd - timerCountBegin
+    print("")
+    print(f"we managed to display the expense history in: {timeDilation:.4f} seconds")
 def interactMenu():
     while True:
         print("========================")
         print("PERSONAL BUDGET TRACKER")
         print("========================")
+        print("")
+        print("this program tracks expenses, reviews spending history, and manages a monthly budget")
+        print("")
+        print("There is no subscription needed. Your budget information is stored locally on your device in budgetInfo.json")
         print("Option 1: Add an Expense")
         print("Option 2: Set a monthly cap")
         print("Option 3: Look at Expense History")
@@ -134,5 +193,7 @@ def interactMenu():
             print("please select a number integer from 1-4")
 
 if __name__ == "__main__":
+    summonInfo()
+    
     interactMenu()
         

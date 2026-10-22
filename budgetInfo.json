@@ -1,0 +1,15 @@
+{
+  "budget": 500,
+  "expenses": [
+    {
+      "amount": 25.5,
+      "date": "2026-10-21",
+      "category": "Food"
+    },
+    {
+      "amount": 50.0,
+      "date": "2026-10-12",
+      "category": "apple"
+    }
+  ]
+}
